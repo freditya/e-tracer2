@@ -36,13 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Job.findByIsDelete", query = "SELECT j FROM Job j WHERE j.isDelete = :isDelete")})
 public class Job implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "jobId")
-    private String jobId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -53,6 +46,16 @@ public class Job implements Serializable {
     @Size(min = 1, max = 5)
     @Column(name = "isDelete")
     private String isDelete;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobId", fetch = FetchType.LAZY)
+    private List<JobHistory> jobHistoryList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "jobId")
+    private String jobId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobId", fetch = FetchType.LAZY)
     private List<Employee> employeeList;
 
@@ -77,21 +80,6 @@ public class Job implements Serializable {
         this.jobId = jobId;
     }
 
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete;
-    }
 
     @XmlTransient
     public List<Employee> getEmployeeList() {
@@ -125,6 +113,32 @@ public class Job implements Serializable {
     @Override
     public String toString() {
         return "etracer.com.projectetracer.entities.Job[ jobId=" + jobId + " ]";
+    }
+
+
+    @XmlTransient
+    public List<JobHistory> getJobHistoryList() {
+        return jobHistoryList;
+    }
+
+    public void setJobHistoryList(List<JobHistory> jobHistoryList) {
+        this.jobHistoryList = jobHistoryList;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
     
 }

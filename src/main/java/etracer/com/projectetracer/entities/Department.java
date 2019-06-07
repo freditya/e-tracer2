@@ -38,13 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Department.findByIsDelete", query = "SELECT d FROM Department d WHERE d.isDelete = :isDelete")})
 public class Department implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "departmentId")
-    private String departmentId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -55,6 +48,16 @@ public class Department implements Serializable {
     @Size(min = 1, max = 5)
     @Column(name = "isDelete")
     private String isDelete;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departmentId", fetch = FetchType.LAZY)
+    private List<JobHistory> jobHistoryList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "departmentId")
+    private String departmentId;
     @JoinColumn(name = "villageId", referencedColumnName = "villageId")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Village villageId;
@@ -85,21 +88,6 @@ public class Department implements Serializable {
         this.departmentId = departmentId;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete;
-    }
 
     public Village getVillageId() {
         return villageId;
@@ -149,6 +137,32 @@ public class Department implements Serializable {
     @Override
     public String toString() {
         return "etracer.com.projectetracer.entities.Department[ departmentId=" + departmentId + " ]";
+    }
+
+
+    @XmlTransient
+    public List<JobHistory> getJobHistoryList() {
+        return jobHistoryList;
+    }
+
+    public void setJobHistoryList(List<JobHistory> jobHistoryList) {
+        this.jobHistoryList = jobHistoryList;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
     
 }

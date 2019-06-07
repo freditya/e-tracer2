@@ -37,13 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Village.findByIsDelete", query = "SELECT v FROM Village v WHERE v.isDelete = :isDelete")})
 public class Village implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "villageId")
-    private String villageId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -59,6 +52,16 @@ public class Village implements Serializable {
     @Size(min = 1, max = 5)
     @Column(name = "isDelete")
     private String isDelete;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "villageId", fetch = FetchType.LAZY)
+    private List<Site> siteList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "villageId")
+    private String villageId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "villageId", fetch = FetchType.LAZY)
     private List<Department> departmentList;
 
@@ -84,29 +87,6 @@ public class Village implements Serializable {
         this.villageId = villageId;
     }
 
-    public String getVillageName() {
-        return villageName;
-    }
-
-    public void setVillageName(String villageName) {
-        this.villageName = villageName;
-    }
-
-    public String getSubDistrictId() {
-        return subDistrictId;
-    }
-
-    public void setSubDistrictId(String subDistrictId) {
-        this.subDistrictId = subDistrictId;
-    }
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete;
-    }
 
     @XmlTransient
     public List<Department> getDepartmentList() {
@@ -140,6 +120,40 @@ public class Village implements Serializable {
     @Override
     public String toString() {
         return "etracer.com.projectetracer.entities.Village[ villageId=" + villageId + " ]";
+    }
+
+
+    @XmlTransient
+    public List<Site> getSiteList() {
+        return siteList;
+    }
+
+    public void setSiteList(List<Site> siteList) {
+        this.siteList = siteList;
+    }
+
+    public String getVillageName() {
+        return villageName;
+    }
+
+    public void setVillageName(String villageName) {
+        this.villageName = villageName;
+    }
+
+    public String getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public void setSubDistrictId(String subDistrictId) {
+        this.subDistrictId = subDistrictId;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
     
 }

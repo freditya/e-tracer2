@@ -45,16 +45,6 @@ public class Role implements Serializable {
 
     public Role() {
     }
-    @Column
-    private String role;
-
-    public String getAuthority() {
-        return role;
-    }
-
-    public void setAuthority(String authority) {
-        this.role = role;
-    }
 
     public Role(String roleId) {
         this.roleId = roleId;
@@ -105,5 +95,5 @@ public class Role implements Serializable {
     public String toString() {
         return "etracer.com.projectetracer.entities.Role[ roleId=" + roleId + " ]";
     }
-
+    
 }

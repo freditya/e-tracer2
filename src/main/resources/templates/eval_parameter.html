@@ -14,6 +14,7 @@
 
         <!-- Fontfaces CSS-->
         <link th:href="@{/assets/css/font-face.css}" rel="stylesheet" media="all">
+        <link href="css/style.css" rel="stylesheet" media="all">
         <link th:href="@{/assets/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
         <link th:href="@{/assets/vendor/font-awesome-5/css/fontawesome-all.min.css}" rel="stylesheet" media="all">
         <link th:href="@{/assets/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
@@ -96,7 +97,7 @@
                                         <a th:href="@{/district}">District</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/assessment}">Assessment</a>
+                                        <a th:href="@{/assesment}">Assessment</a>
                                     </li>
                                     <li>
                                         <a th:href="@{/department}">Department</a>
@@ -105,7 +106,6 @@
                                         <a th:href="@{/eval_parameter}">Evaluation</a>
                                     </li>
                                 </ul>
-                                
                             </li>
 
                             <li class="hs-sub">
@@ -237,83 +237,48 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-12">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Evaluation Parameter  </li>
+
+                                        </ol>
+                                    </nav>
                                     <div class="overview-wrap" style="padding-bottom: 20px">
-                                        <h2 class="title-1">Welcome Admin</h2>
+                                        <h2 class="title-1">Province</h2>
+                                        <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#input-eval"><i class="fa fa-plus"></i>
+                                            Add Data</button>
+                                    </div>
+                                    <div class="table-responsive table--no-card m-b-30">
+                                        <table class="table table-borderless table-striped table-data3">
+                                            <thead>
+                                                <tr>
+                                                    <th>Evaluation ID</th>
+                                                    <th>Evaluation Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each = "data:${dataEval}">
+                                                    <td id="evaluation_id" th:text="${data.evaluationId}"></td>
+                                                    <td id="evaluation_name" th:text="${data.evaluationName}"></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#edit-eval"><i class="fa fa-edit"></i>
+                                                            Edit</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-province"><i class="fa fa-trash"></i>
+                                                            Delete</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row m-t-25">
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="overview-item overview-item--c1">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="icon">
-                                                    <i class="zmdi zmdi-account-o"></i>
-                                                </div>
-                                                <div class="text">
-                                                    <h2>10368</h2>
-                                                    <span>members online</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview-chart">
-                                                <canvas id="widgetChart1"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="overview-item overview-item--c2">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="icon">
-                                                    <i class="zmdi zmdi-shopping-cart"></i>
-                                                </div>
-                                                <div class="text">
-                                                    <h2>388,688</h2>
-                                                    <span>items solid</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview-chart">
-                                                <canvas id="widgetChart2"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="overview-item overview-item--c3">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="icon">
-                                                    <i class="zmdi zmdi-calendar-note"></i>
-                                                </div>
-                                                <div class="text">
-                                                    <h2>1,086</h2>
-                                                    <span>this week</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview-chart">
-                                                <canvas id="widgetChart3"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="icon">
-                                                    <i class="zmdi zmdi-money"></i>
-                                                </div>
-                                                <div class="text">
-                                                    <h2>$1,060,386</h2>
-                                                    <span>total earnings</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview-chart">
-                                                <canvas id="widgetChart4"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <!-- DATA TABLE-->
+
+                                    <!-- END DATA TABLE-->
                                 </div>
                             </div>
                             <div class="row">
@@ -329,6 +294,105 @@
             </div>
 
         </div>
+
+        <!--Modal input Dialog--> 
+        <div class="modal fade" id="input-eval" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Assessment</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <form th:action="@{/eval_parameter/addData}" method="post">
+                        <input type="hidden" class="form-control" id="isDelete" name="isDelete" value="false">
+
+                        <div class="form-group required">
+                            <label for="evaluationId" class="col-form-label col-md-4">Evaluation ID</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="evaluationId" name="evaluationId" placeholder="Evaluation Identity">
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="evaluationName" class="col-form-label col-md-4">Evaluation Name</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="evaluationName" name="evaluationName" placeholder="Evaluation Name">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="confirm">Save</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+         <!--Modal input Dialog--> 
+        <div class="modal fade" id="edit-eval" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Evaluation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <form th:action="@{/eval_parameter/update}" method="get">
+                        <input type="hidden" class="form-control" id="isDelete" name="isDelete" value="false">
+
+                        <div class="form-group required">
+                            <label for="evaluationId" class="col-form-label col-md-4">Evaluation ID</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="evaluation_id" name="evaluationId" placeholder="Evaluation Identity">
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="evaluationName" class="col-form-label col-md-4">Evaluation Name</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="evaluation_name" name="evaluationName" placeholder="Evaluation Name">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="confirm">Save</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+
+        <!--
+        
+        
+        delete
+          <div class="delete-form">
+            <form th:action="@{/delete}" method="get">
+                <div class="modal fade" id="delete-province" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                    <input type="hidden" class="form-control" id="province_id" name="provinceId" placeholder="Province Identity" readonly>
+                                    <input type="hidden" class="form-control" id="province_name" name="provinceName" placeholder="Province Name">
+                                    <input type="hidden" class="form-control" id="isDelete" value="true" name="isDelete" placeholder="Delete">
+                                    Anda yakin ingin mengahpus data ini?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Delete" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>-->
+
 
         <!-- Jquery JS-->
         <script th:src="@{/assets/vendor/jquery-3.2.1.min.js}"></script>
@@ -352,7 +416,42 @@
         </script>
 
         <!-- Main JS-->
-        <script th:src="@{/assets/js/main.js}"></script> 
+        <script th:src="@{/assets/js/main.js}"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("#edit-assessment").on('show.bs.modal', function (e) {
+                    var _button = $(e.relatedTarget);
+                    var _row = _button.parents("tr");
+
+                    var _evaluationId = _row.find("#evaluation_id").text();
+                    var _evaluationName = _row.find("#evaluation_name").text();
+
+                    $(this).find("#evaluation_id").val(_evaluationId);
+                    $(this).find("#evaluation_name").val(_evaluationName);
+
+
+
+                })
+            })
+        </script>
+        <!--
+        
+        <script>
+            $(document).ready(function () {
+                $("#delete-province").on('show.bs.modal', function (e) {
+                    var _button = $(e.relatedTarget);
+                    var _row = _button.parents("tr");
+
+                    var _provinceId = _row.find("#province_Id").text();
+                    var _provinceName = _row.find("#province_Name").text();
+
+                    $(this).find("#province_id").val(_provinceId);
+                    $(this).find("#province_name").val(_provinceName);
+                })
+            })
+        </script>-->
+
 
 
     </body>

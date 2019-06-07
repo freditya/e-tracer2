@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -49,20 +50,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Employee.findByIsDelete", query = "SELECT e FROM Employee e WHERE e.isDelete = :isDelete")})
 public class Employee implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "employeeId")
-    private String employeeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "employeeName")
     private String employeeName;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "address")
     private String address;
@@ -70,10 +64,12 @@ public class Employee implements Serializable {
     @NotNull
     @Column(name = "dateOfBirth")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateOfBirth;
     @Basic(optional = false)
     @NotNull
     @Column(name = "dateOfJoin")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Temporal(TemporalType.DATE)
     private Date dateOfJoin;
     @Basic(optional = false)
@@ -87,27 +83,52 @@ public class Employee implements Serializable {
     @Column(name = "gender")
     private String gender;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "phone")
     private String phone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "email")
     private String email;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 150)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 5)
     @Column(name = "isDelete")
     private String isDelete;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<RespondProblem> respondProblemList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<Assessment> assessmentList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<UserRole> userRoleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<Site> siteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<Category> categoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<JobHistory> jobHistoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId", fetch = FetchType.LAZY)
+    private List<ReportProblem> reportProblemList;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "employeeId")
+    private String employeeId;
     @OneToMany(mappedBy = "employeeId", fetch = FetchType.LAZY)
     private List<Department> departmentList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "managerId", fetch = FetchType.LAZY)
@@ -121,6 +142,8 @@ public class Employee implements Serializable {
     @JoinColumn(name = "jobId", referencedColumnName = "jobId")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Job jobId;
+    
+
 
     public Employee() {
     }
@@ -149,6 +172,138 @@ public class Employee implements Serializable {
 
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+
+    @XmlTransient
+    public List<Department> getDepartmentList() {
+        return departmentList;
+    }
+
+    public void setDepartmentList(List<Department> departmentList) {
+        this.departmentList = departmentList;
+    }
+
+    @XmlTransient
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+
+    public Employee getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Employee managerId) {
+        this.managerId = managerId;
+    }
+
+    public Department getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Department departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Job getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Job jobId) {
+        this.jobId = jobId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (employeeId != null ? employeeId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Employee)) {
+            return false;
+        }
+        Employee other = (Employee) object;
+        if ((this.employeeId == null && other.employeeId != null) || (this.employeeId != null && !this.employeeId.equals(other.employeeId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "etracer.com.projectetracer.entities.Employee[ employeeId=" + employeeId + " ]";
+    }
+
+
+    @XmlTransient
+    public List<RespondProblem> getRespondProblemList() {
+        return respondProblemList;
+    }
+
+    public void setRespondProblemList(List<RespondProblem> respondProblemList) {
+        this.respondProblemList = respondProblemList;
+    }
+
+    @XmlTransient
+    public List<Assessment> getAssessmentList() {
+        return assessmentList;
+    }
+
+    public void setAssessmentList(List<Assessment> assessmentList) {
+        this.assessmentList = assessmentList;
+    }
+
+    @XmlTransient
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
+    }
+
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
+    }
+
+    @XmlTransient
+    public List<Site> getSiteList() {
+        return siteList;
+    }
+
+    public void setSiteList(List<Site> siteList) {
+        this.siteList = siteList;
+    }
+
+    @XmlTransient
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
+
+    @XmlTransient
+    public List<JobHistory> getJobHistoryList() {
+        return jobHistoryList;
+    }
+
+    public void setJobHistoryList(List<JobHistory> jobHistoryList) {
+        this.jobHistoryList = jobHistoryList;
+    }
+
+    @XmlTransient
+    public List<ReportProblem> getReportProblemList() {
+        return reportProblemList;
+    }
+
+    public void setReportProblemList(List<ReportProblem> reportProblemList) {
+        this.reportProblemList = reportProblemList;
     }
 
     public String getEmployeeName() {
@@ -229,73 +384,6 @@ public class Employee implements Serializable {
 
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
-    }
-
-    @XmlTransient
-    public List<Department> getDepartmentList() {
-        return departmentList;
-    }
-
-    public void setDepartmentList(List<Department> departmentList) {
-        this.departmentList = departmentList;
-    }
-
-    @XmlTransient
-    public List<Employee> getEmployeeList() {
-        return employeeList;
-    }
-
-    public void setEmployeeList(List<Employee> employeeList) {
-        this.employeeList = employeeList;
-    }
-
-    public Employee getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Employee managerId) {
-        this.managerId = managerId;
-    }
-
-    public Department getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Department departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public Job getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Job jobId) {
-        this.jobId = jobId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (employeeId != null ? employeeId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Employee)) {
-            return false;
-        }
-        Employee other = (Employee) object;
-        if ((this.employeeId == null && other.employeeId != null) || (this.employeeId != null && !this.employeeId.equals(other.employeeId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "etracer.com.projectetracer.entities.Employee[ employeeId=" + employeeId + " ]";
     }
     
 }
