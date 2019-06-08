@@ -25,7 +25,7 @@ public class EvaluationController {
     private EvaluationRepository repository;
     
     @GetMapping("/eval_parameter")
-    public String Evaluation(Model model) {
+    public String Evaluation(Model model, EvaluationParameter evaluationParameter) {
         model.addAttribute("dataEval", repository.getAll());
         return "eval_parameter";
     }
